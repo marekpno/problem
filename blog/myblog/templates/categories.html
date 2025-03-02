@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% if category_posts %}
+
+  <h1>{{ cats }}</h1>
+
+  <ul>
+  {% for post in category_posts %}
+
+  <li><a href="{% url 'article-detail' post.pk%}">{{ post.title }}</a>
+
+          - {{ post.author.first_name}}
+          -{{ post.author.last_name}}
+              - {{ post.post_date }}
+          {% if user.is_authenticated %}
+              - <a href="{% url 'update_post' post.pk%}">Edit</a> <br/>
+              - <a href="{% url 'delete_post' post.pk%}">Delete</a> <br/>
+          {% endif %}
+          {{ post.body|safe }}</li>
+
+  {% endfor %}
+
+  </ul>
+
+{% else %}
+  <h2> sory nie ma takiej strony</h2>
+{% endif %}
+
+{% endblock %}
