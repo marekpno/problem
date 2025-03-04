@@ -5,17 +5,22 @@
 {% block content %}
 
 {% if user.is_authenticated %}
-    <h1>Update Post Blog...</h1>
-    <br><br/>
-    <div class="form-group">
-        <form method="POST">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit" class="btn btn-secondary">Update</button>
-        </form>  <!-- Poprawne zamknięcie tagu form -->
-    </div>
+    {% if user.id == post.author.id%}
+        <h1>Update Post Blog...</h1>
+        <br><br/>
+        <div class="form-group">
+            <form method="POST">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-secondary">Update</button>
+            </form>  <!-- Poprawne zamknięcie tagu form -->
+        </div>
+    {% else %}
+        <p>You are not allowed here!</p>
+{% endif %}
+
 {% else %}
-    <p>You are not allowed here!</p>
+        <p>You are not allowed here!</p>
 {% endif %}
 
 {% endblock %}
