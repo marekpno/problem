@@ -24,20 +24,17 @@ def CategoryListView(request):
     cat_menu_list = Category.objects.all()
     return render(request, 'category_list.html', {'cat_menu_list':cat_menu_list})
 
-
+from unidecode import unidecode
 
 def CategoryView(request, cats):
+
+    cats = unidecode(cats)
+
     category_posts = Post.objects.filter(category__iexact = cats.replace('-',' '))
 
-    # Pobierz wszystkie posty
-    category_posts = Post.objects.all()
 
-    # Wypisz wszystkie unikalne kategorie postów
-    print("Kategorie wszystkich postów:")
-    categories = category_posts.values_list('category', flat=True).distinct()  # Pobieramy unikalne kategorie
-    for category in categories:
-        print(f"- {category}")
-    print(f"Przekazana kategoria: {cats}")  # Sprawdź, co Django dostaje w URL
+    print(f"Wybrany  kategorii: {cats}")
+
     return render(request, 'categories.html',{'cats': cats.title().replace('-', ' '), 'category_posts': category_posts})
 
 

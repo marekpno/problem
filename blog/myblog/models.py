@@ -2,10 +2,15 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.urls import reverse
 from datetime import datetime, date
+from unidecode import unidecode
+
 
 class Category(models.Model):
     name = models.CharField(max_length=255)
 
+    def save(self, *args, **kwargs):
+        self.name = unidecode(self.name)  # Usuwamy polskie znaki przed zapisem
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.name
