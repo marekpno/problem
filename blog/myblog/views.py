@@ -28,8 +28,18 @@ def CategoryListView(request):
 
 def CategoryView(request, cats):
     category_posts = Post.objects.filter(category__iexact = cats.replace('-',' '))
+
+    # Pobierz wszystkie posty
+    category_posts = Post.objects.all()
+
+    # Wypisz wszystkie unikalne kategorie postów
+    print("Kategorie wszystkich postów:")
+    categories = category_posts.values_list('category', flat=True).distinct()  # Pobieramy unikalne kategorie
+    for category in categories:
+        print(f"- {category}")
+    print(f"Przekazana kategoria: {cats}")  # Sprawdź, co Django dostaje w URL
     return render(request, 'categories.html',{'cats': cats.title().replace('-', ' '), 'category_posts': category_posts})
-    #print(f"Przekazana kategoria: {cats}")  # Sprawdź, co Django dostaje w URL
+
 
 class ArticleDetailView(DetailView):
     model = Post
