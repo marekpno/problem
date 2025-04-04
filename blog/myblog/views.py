@@ -24,18 +24,13 @@ def CategoryListView(request):
     cat_menu_list = Category.objects.all()
     return render(request, 'category_list.html', {'cat_menu_list':cat_menu_list})
 
+from django.shortcuts import render, get_object_or_404
 from unidecode import unidecode
 
 def CategoryView(request, cats):
-
-    cats = unidecode(cats)
-
-    category_posts = Post.objects.filter(category__iexact = cats.replace('-',' '))
-
-
-    print(f"Wybrany  kategorii: {cats}")
-
-    return render(request, 'categories.html',{'cats': cats.title().replace('-', ' '), 'category_posts': category_posts})
+    category = get_object_or_404(Category, slug=cats)
+    category_posts = Post.objects.filter(category=category)
+    return render(request, 'categories.html', {'cats': category.name, 'category_posts': category_posts})
 
 
 class ArticleDetailView(DetailView):
