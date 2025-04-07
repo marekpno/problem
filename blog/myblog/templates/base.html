@@ -32,9 +32,9 @@
         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
 
 
+
         {% for item in cat_menu %}
-            <a class="dropdown-item" href="{% url 'category' item|slugify %}">
-            {{ item }}</a>
+            <a class="dropdown-item" href="{{ item.get_absolute_url }}">{{ item.name }}</a>
         {% endfor %}
 
         </div>

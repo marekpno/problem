@@ -24,12 +24,17 @@ def CategoryListView(request):
     cat_menu_list = Category.objects.all()
     return render(request, 'category_list.html', {'cat_menu_list':cat_menu_list})
 
-
+from django.shortcuts import render, get_object_or_404
+from unidecode import unidecode
 
 def CategoryView(request, cats):
-    category_posts = Post.objects.filter(category__iexact = cats.replace('-',' '))
-    return render(request, 'categories.html',{'cats': cats.title().replace('-', ' '), 'category_posts': category_posts})
-    #print(f"Przekazana kategoria: {cats}")  # Sprawdź, co Django dostaje w URL
+    category = get_object_or_404(Category, slug=cats)
+    category_posts = Post.objects.filter(category=category)
+
+    print("Category name:", category.name)
+    print("Category slug:", category.slug)
+
+    return render(request, 'categories.html', {'cats': category.name, 'category_posts': category_posts})
 
 class ArticleDetailView(DetailView):
     model = Post
